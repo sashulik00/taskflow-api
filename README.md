@@ -105,6 +105,27 @@ docker compose exec api alembic downgrade base
 docker compose exec api alembic upgrade head
 ```
 
+## Тесты
+
+Тесты используют PostgreSQL из Docker Compose и отдельную базу `taskflow_test`, которая создаётся автоматически. Рабочие данные не затрагиваются.
+
+```bash
+docker compose up -d db
+python -m venv .venv
+.venv\Scripts\Activate.ps1      # Windows (PowerShell)
+# source .venv/bin/activate     # Linux / macOS
+pip install -r requirements-dev.txt
+pytest
+```
+
+Что проверяется:
+
+- `tests/test_migrations.py` — миграционные тесты: `upgrade` создаёт пять таблиц, `downgrade` удаляет их, правила `CASCADE`, `SET NULL` и `RESTRICT` записаны в БД;
+- `tests/test_health.py`, `test_users.py`, `test_projects.py`, `test_labels.py`, `test_tasks.py`, `test_comments.py` — интеграционные тесты API через `TestClient`: успешные сценарии (200, 201, 204) и ошибки (404, 409, 422), фильтры, каскадное удаление;
+- `tests/test_unit.py` — юнит-тесты отдельных функций и Pydantic-схем, включая ответ 503 при недоступной БД.
+
+Фикстуры находятся в `tests/conftest.py`. Покрытие кода считается автоматически (`pytest-cov`); если оно ниже 100 %, запуск завершается ошибкой.
+
 ## Структура проекта
 
 ```text
