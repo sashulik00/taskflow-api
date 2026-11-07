@@ -25,6 +25,7 @@ class ReadSchema(BaseModel):
 
 # ---------- users ----------
 
+
 class UserCreate(InputSchema):
     email: str = Field(max_length=255, pattern=EMAIL_PATTERN)
     display_name: str = Field(min_length=1, max_length=255)
@@ -48,6 +49,7 @@ class UserRead(ReadSchema):
 
 # ---------- projects ----------
 
+
 class ProjectCreate(InputSchema):
     name: str = Field(min_length=1, max_length=200)
     description: str | None = None
@@ -67,6 +69,7 @@ class ProjectRead(ReadSchema):
 
 # ---------- labels ----------
 
+
 class LabelCreate(InputSchema):
     name: str = Field(min_length=1, max_length=64)
     color: str = Field(default="#6b7280", pattern=COLOR_PATTERN)
@@ -84,6 +87,7 @@ class LabelRead(ReadSchema):
 
 
 # ---------- tasks ----------
+
 
 class TaskCreate(InputSchema):
     project_id: int
@@ -119,6 +123,7 @@ class TaskRead(ReadSchema):
 
 
 # ---------- comments ----------
+
 
 def _check_not_blank(value: str | None) -> str | None:
     if value is not None and not value.strip():

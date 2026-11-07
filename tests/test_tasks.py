@@ -89,9 +89,7 @@ def test_list_tasks_with_filters(client):
     all_tasks = client.get("/v1/tasks").json()
     by_project = client.get("/v1/tasks", params={"project_id": first["id"]}).json()
     by_status = client.get("/v1/tasks", params={"status": "open"}).json()
-    by_both = client.get(
-        "/v1/tasks", params={"project_id": first["id"], "status": "done"}
-    ).json()
+    by_both = client.get("/v1/tasks", params={"project_id": first["id"], "status": "done"}).json()
 
     assert [t["id"] for t in all_tasks] == [open_task["id"], done_task["id"], other_task["id"]]
     assert [t["id"] for t in by_project] == [open_task["id"], done_task["id"]]
@@ -137,9 +135,7 @@ def test_update_task_status_to_done(client, task):
 
 
 def test_update_task_can_remove_assignee_and_label(client, task):
-    response = client.patch(
-        f"/v1/tasks/{task['id']}", json={"assignee_id": None, "label_id": None}
-    )
+    response = client.patch(f"/v1/tasks/{task['id']}", json={"assignee_id": None, "label_id": None})
 
     assert response.status_code == 200
     assert response.json()["assignee_id"] is None

@@ -17,9 +17,7 @@ def get_or_404(db: Session, model: type[ModelT], object_id: int, name: str) -> M
     """Найти запись по id или вернуть клиенту ошибку 404."""
     obj = db.get(model, object_id)
     if obj is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"{name} not found"
-        )
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"{name} not found")
     return obj
 
 

@@ -8,8 +8,8 @@ from app.database import get_db
 from app.main import app
 from app.routers.common import commit_or_409, get_or_404
 
-
 # ---------- поддельные сессии базы данных ----------
+
 
 class BrokenSession:
     """Сессия, у которой база «недоступна»."""
@@ -51,6 +51,7 @@ class FakeGetSession:
 
 # ---------- /health при недоступной базе ----------
 
+
 def test_health_returns_503_when_database_is_down(client):
     app.dependency_overrides[get_db] = lambda: BrokenSession()
     try:
@@ -63,6 +64,7 @@ def test_health_returns_503_when_database_is_down(client):
 
 
 # ---------- commit_or_409 ----------
+
 
 def test_commit_or_409_does_nothing_when_commit_succeeds():
     class OkSession:
@@ -100,6 +102,7 @@ def test_commit_or_409_turns_integrity_error_into_409(pgcode, detail):
 
 # ---------- get_or_404 ----------
 
+
 def test_get_or_404_returns_found_object():
     found = object()
 
@@ -115,6 +118,7 @@ def test_get_or_404_raises_404_when_object_is_missing():
 
 
 # ---------- Pydantic-схемы ----------
+
 
 def test_task_create_has_default_status_and_priority():
     task = schemas.TaskCreate(project_id=1, title="Тест")

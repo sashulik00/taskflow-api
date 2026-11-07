@@ -1,6 +1,6 @@
-from alembic import command
 from sqlalchemy import inspect
 
+from alembic import command
 from app.database import engine
 
 APP_TABLES = {"users", "projects", "labels", "tasks", "comments"}
@@ -13,10 +13,7 @@ def get_tables() -> set[str]:
 def get_delete_rules(table: str) -> dict[str, str]:
     """Вернуть правило ondelete для каждого внешнего ключа таблицы."""
     foreign_keys = inspect(engine).get_foreign_keys(table)
-    return {
-        fk["constrained_columns"][0]: fk["options"].get("ondelete")
-        for fk in foreign_keys
-    }
+    return {fk["constrained_columns"][0]: fk["options"].get("ondelete") for fk in foreign_keys}
 
 
 def test_upgrade_creates_exactly_five_tables():

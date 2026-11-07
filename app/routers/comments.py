@@ -32,9 +32,7 @@ def create_comment(payload: schemas.CommentCreate, db: Session = Depends(get_db)
 
 
 @router.patch("/{comment_id}", response_model=schemas.CommentRead)
-def update_comment(
-    comment_id: int, payload: schemas.CommentUpdate, db: Session = Depends(get_db)
-):
+def update_comment(comment_id: int, payload: schemas.CommentUpdate, db: Session = Depends(get_db)):
     comment = get_or_404(db, models.Comment, comment_id, "Comment")
     for field, value in payload.model_dump(exclude_unset=True).items():
         setattr(comment, field, value)
