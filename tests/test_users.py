@@ -2,9 +2,7 @@ import pytest
 
 
 def test_create_user(client):
-    response = client.post(
-        "/v1/users", json={"email": "ivan@example.com", "display_name": "Иван"}
-    )
+    response = client.post("/v1/users", json={"email": "ivan@example.com", "display_name": "Иван"})
 
     assert response.status_code == 201
     data = response.json()
@@ -26,9 +24,7 @@ def test_create_admin(client):
 
 
 def test_create_user_with_duplicate_email(client, user):
-    response = client.post(
-        "/v1/users", json={"email": user["email"], "display_name": "Двойник"}
-    )
+    response = client.post("/v1/users", json={"email": user["email"], "display_name": "Двойник"})
 
     assert response.status_code == 409
     assert response.json()["detail"] == "Запись с таким уникальным значением уже существует"

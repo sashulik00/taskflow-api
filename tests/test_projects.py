@@ -2,9 +2,7 @@ import pytest
 
 
 def test_create_project(client):
-    response = client.post(
-        "/v1/projects", json={"name": "Ремонт", "description": "Список дел"}
-    )
+    response = client.post("/v1/projects", json={"name": "Ремонт", "description": "Список дел"})
 
     assert response.status_code == 201
     data = response.json()

@@ -29,9 +29,7 @@ def create_label(payload: schemas.LabelCreate, db: Session = Depends(get_db)):
 
 
 @router.patch("/{label_id}", response_model=schemas.LabelRead)
-def update_label(
-    label_id: int, payload: schemas.LabelUpdate, db: Session = Depends(get_db)
-):
+def update_label(label_id: int, payload: schemas.LabelUpdate, db: Session = Depends(get_db)):
     label = get_or_404(db, models.Label, label_id, "Label")
     for field, value in payload.model_dump(exclude_unset=True).items():
         setattr(label, field, value)

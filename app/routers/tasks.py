@@ -38,9 +38,7 @@ def create_task(payload: schemas.TaskCreate, db: Session = Depends(get_db)):
 
 
 @router.patch("/{task_id}", response_model=schemas.TaskRead)
-def update_task(
-    task_id: int, payload: schemas.TaskUpdate, db: Session = Depends(get_db)
-):
+def update_task(task_id: int, payload: schemas.TaskUpdate, db: Session = Depends(get_db)):
     task = get_or_404(db, models.Task, task_id, "Task")
     for field, value in payload.model_dump(exclude_unset=True).items():
         setattr(task, field, value)

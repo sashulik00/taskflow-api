@@ -1,4 +1,5 @@
 import os
+
 TEST_DATABASE_URL = os.environ.get(
     "TEST_DATABASE_URL",
     "postgresql+psycopg2://taskflow:taskflow@localhost:5432/taskflow_test",
@@ -6,12 +7,12 @@ TEST_DATABASE_URL = os.environ.get(
 os.environ["DATABASE_URL"] = TEST_DATABASE_URL
 
 import pytest  # noqa: E402
-from alembic import command  # noqa: E402
 from alembic.config import Config  # noqa: E402
 from fastapi.testclient import TestClient  # noqa: E402
 from sqlalchemy import create_engine, text  # noqa: E402
 from sqlalchemy.engine import make_url  # noqa: E402
 
+from alembic import command  # noqa: E402
 from app.database import engine  # noqa: E402
 from app.main import app  # noqa: E402
 
@@ -21,9 +22,7 @@ TABLES = "comments, tasks, labels, projects, users"
 def create_test_database() -> None:
     """Создать базу taskflow_test, если её ещё нет."""
     url = make_url(TEST_DATABASE_URL)
-    admin_engine = create_engine(
-        url.set(database="postgres"), isolation_level="AUTOCOMMIT"
-    )
+    admin_engine = create_engine(url.set(database="postgres"), isolation_level="AUTOCOMMIT")
     with admin_engine.connect() as connection:
         exists = connection.scalar(
             text("SELECT 1 FROM pg_database WHERE datname = :name"),
@@ -66,11 +65,10 @@ def client():
 
 # ---------- готовые записи для тестов ----------
 
+
 @pytest.fixture
 def user(client):
-    response = client.post(
-        "/v1/users", json={"email": "anna@example.com", "display_name": "Анна"}
-    )
+    response = client.post("/v1/users", json={"email": "anna@example.com", "display_name": "Анна"})
     assert response.status_code == 201
     return response.json()
 

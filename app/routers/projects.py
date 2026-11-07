@@ -29,9 +29,7 @@ def create_project(payload: schemas.ProjectCreate, db: Session = Depends(get_db)
 
 
 @router.patch("/{project_id}", response_model=schemas.ProjectRead)
-def update_project(
-    project_id: int, payload: schemas.ProjectUpdate, db: Session = Depends(get_db)
-):
+def update_project(project_id: int, payload: schemas.ProjectUpdate, db: Session = Depends(get_db)):
     project = get_or_404(db, models.Project, project_id, "Project")
     for field, value in payload.model_dump(exclude_unset=True).items():
         setattr(project, field, value)
